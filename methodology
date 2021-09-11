@@ -1,0 +1,143 @@
+Network Scanning
+Network(TCP/UDP):
+  ☐   sudo nmap -sC -sS -sV -p- IP
+  ☐   sudo nmap -sV -A -O --script=*vuln* IP
+  ☐   sudo nmap -v -sU -sS -p- -A -T4 IP
+  ☐   sudo nmap -sS -sU -T4 -A -v IP
+  ☐   sudo nmap -p 1-65535 -T4 -A -v $ip/24
+  ☐   nbtscan -r IP
+  ☐   sudo nmap -sS -A -sV -O -p- IP
+  ☐   
+  ☐   
+SMB:
+ SMB:
+  ☐   enum4linux -a IP
+  ☐   nmap IP -sV -Pn -vv -p 139,445 --script=smb-vuln* --script-args=unsafe=1
+  ☐   smbclient -N -L //IP      (List Shares)
+  ☐   smbclient \\\\[ip]\\share (Connection)
+  ☐   smbmap -H $ip
+  ☐   enum4linux -u 'guest' -p '' -a $ip
+  ☐   crackmapexec -u 'guest' -p '' --shares $ip
+  ☐   crackmapexec -u 'guest' -p '' --rid-brute 4000 $ip
+  ☐   crackmapexec -u 'guest' -p '' --users $ip
+  ☐   crackmapexec smb 192.168.1.0/24 -u Administrator -p P@ssw0rd
+  ☐   crackmapexec smb 192.168.1.0/24 -u Administrator -H E52CAC67419A9A2238F10713B629B565:64F12CDDAA88057E06A81B54E73B949B (Test Passing Hashes)
+  ☐   smbmap -u guest -p '' -H $ip
+  ☐   hydra -l administrator -P /usr/share/wordlists/rockyou.txt -t 1 IP smb
+  ☐   SAMBA 3.5.11 # vulnerable to linux/samba/is_known_pipename
+  ☐   
+  ☐  
+  ☐   
+  ☐  
+Web:
+WebApp
+  ☐   Nikto -h IP
+  ☐   feroxbuster --url http://10.10.10.63:50000 --depth 2 --wordlist /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+  ☐   dotdotpwn -m http -o windows -x PORT -h IP 
+  ☐   feroxbuster --url http://10.10.10.10 --depth 2 --wordlist /usr/share/dirb/wordlists/common.txt
+  ☐   WPScan
+  ☐   view source 
+  ☐   SQLI 'or'1'='1';-- - ||||||| ' or 1=1 --	
+  ☐   droopscan (Drupal)
+  ☐   joomscan  (Joomla)
+  ☐   List of extensions:
+  sh,txt,php,html,htm,asp,aspx,js,xml,log,json,jpg,jpeg,png,gif,doc,pdf,mpg,mp3,zip,tar.gz,tar
+  
+  
+  
+  
+  
+  
+  
+  Loot/Mental Checklist:
+Checkout what the web display
+
+Read entire pages. Enumerate for emails, names, user info etc.
+
+Directory discovery
+
+Enum the interface, version of CMS? Server installation page?
+
+Potential vulnerability? LFI, RFI, XEE, Upload?
+
+Default web server page, version information
+
+View source code
+
+Hidden Values
+
+Developer Remarks
+ 
+Extraneous Code
+
+Passwords
+
+Robots.txt
+
+Web scanning
+Linux/Windows:
+Linux\Windows
+      ☐   snmpwalk -c public -v1 ipaddress 1
+      ☐   smbclient -L //ipaddress
+      ☐   showmount -e ipaddress port
+      ☐   rpcinfo
+      ☐   Enum4Linux
+LDAP:
+LDAP:
+  ☐   python3 windapsearch.py -u "" --dc-ip 10.10.10.10 -U | grep '@' | cut -d ' ' -f2 | cut -d '@' -f 1 | uniq > users.txt
+  ☐   ldapsearch -h 10.10.10.10 -p 389 -x -b "dc=your,dc=client"
+  ☐   python3 windapsearch.py -d dc.local --dc-ip 10.10.10.10 -U --full |grep Password
+  ☐   nmap -n -sV --script "ldap* and not brute" 10.10.10.161
+  ☐   
+  ☐  
+  ☐   
+  ☐  
+
+
+
+
+Exploitation:
+Exploitation
+   ☐   Gather Version Numbers
+   ☐   Searchsploit
+   ☐   Default Creds CMS/Service
+   ☐   Creds Previously Gathered
+
+Privesc:
+Priv Esc
+
+    Linux
+  ☐   linpeas.sh
+  ☐   linuxprivchecker.py
+  ☐   linux-exploit-suggestor.sh
+  ☐   unix-privesc-check.py
+  
+  
+  Operating System:
+  ☐   uname -a
+  ☐   cat /etc/issue
+  Architecture:
+  ☐   uname -a
+  Writeable Files\Directories:  
+  ☐   ls -la
+  ☐   find /dir -xdev -perm +o=w ! \( -type d -perm +o=t \) ! -type l -print    (world writeable)
+  ☐   find / -type d \( -perm -g+w -or -perm -o+w \) -exec ls -adl {} \;
+  Directory list:
+  
+  
+  Process List:  
+  ☐   ps -aux
+  Installed Applications:
+  ☐   
+  ☐   
+  ☐  
+  Users and Groups:  
+  ☐  cat /etc/passwd
+  ☐  cat /etc/passwd | cut -d : -f 1
+  ☐  cat /etc/group 
+  IPConfig\IFConfig: 
+  ☐   
+  Scheduled Tasks:  
+  ☐ crontab -l  
+  ☐ less /etc/crontab
+  ☐ cd /etc/cron/daily && ls -l
